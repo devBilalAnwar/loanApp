@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\laravel_example\UserManagement;
 use App\Http\Controllers\dashboard\Analytics;
@@ -364,13 +365,13 @@ Route::get('/laravel/user-management', [UserManagement::class, 'UserManagement']
 Route::resource('/user-list', UserManagement::class);
 
 Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
+  'auth:sanctum',
+  config('jetstream.auth_session'),
+  'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+  Route::get('/dashboard', function () {
+    return view('dashboard');
+  })->name('dashboard');
 });
 
 // Route pour afficher le formulaire de recherche
@@ -389,21 +390,22 @@ Route::middleware([
 
   // Routes pour les leazers
   Route::prefix('leazer')->group(function () {
-      Route::get('/dashboard', [LeazerController::class, 'dashboardLeazer'])->name('leazer.dashboard');
-      Route::get('/search-results', [LeazerController::class, 'searchResults'])->name('leazer.search-results');
-      Route::get('/versements', [LeazerController::class, 'versements'])->name('leazer.versements');
-      Route::get('/visites-calendrier', [LeazerController::class, 'visitesCalendrier'])->name('leazer.visites-calendrier');
+    Route::get('/dashboard', [LeazerController::class, 'dashboardLeazer'])->name('leazer.dashboard');
+    Route::get('/search-results', [LeazerController::class, 'searchResults'])->name('leazer.search-results');
+    Route::get('/versements', [LeazerController::class, 'versements'])->name('leazer.versements');
+    Route::get('/visites-calendrier', [LeazerController::class, 'visitesCalendrier'])->name('leazer.visites-calendrier');
   });
 
   // Routes pour les clients
   Route::prefix('client')->group(function () {
-      Route::get('/cahier-des-charges', [ClientController::class, 'cahierDesCharges'])->name('client.cahier-des-charges');
-      Route::get('/dashboard', [ClientController::class, 'dashboardClient'])->name('client.dashboard');
-      Route::get('/propositions-logement', [ClientController::class, 'propositionsLogement'])->name('client.propositions-logement');
-      Route::get('/visites', [ClientController::class, 'visites'])->name('client.visites');
-      Route::get('/chat', [ClientController::class, 'chatClient'])->name('client.chat');
-      Route::get('/contrat', [ClientController::class, 'contratClient'])->name('client.contrat');
-      Route::get('/depot-dossier', [ClientController::class, 'depotdossier'])->name('client.depot-dossier');
+    Route::get('/cahier-des-charges', [ClientController::class, 'cahierDesCharges'])->name('client.cahier-des-charges');
+    Route::get('/dashboard', [ClientController::class, 'dashboardClient'])->name('client.dashboard');
+    Route::get('/propositions-logement', [ClientController::class, 'propositionsLogement'])->name('client.propositions-logement');
+    Route::get('/visites', [ClientController::class, 'visites'])->name('client.visites');
+    Route::get('/chat', [ClientController::class, 'chatClient'])->name('client.chat');
+    Route::get('/loadChatPage', [ClientController::class, 'loadChatPage'])->name('client.chat.loadChatPage');
+    Route::get('/contrat', [ClientController::class, 'contratClient'])->name('client.contrat');
+    Route::get('/depot-dossier', [ClientController::class, 'depotdossier'])->name('client.depot-dossier');
   });
 });
 

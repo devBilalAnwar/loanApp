@@ -14,9 +14,7 @@
     <script src="{{ asset('assets/vendor/libs/bootstrap-maxlength/bootstrap-maxlength.js') }}"></script>
 @endsection
 
-@section('page-script')
-    <script src="{{ asset('assets/js/app-chat.js') }}"></script>
-@endsection
+
 
 @section('content')
     <div class="app-chat card overflow-hidden">
@@ -111,14 +109,15 @@
             </div>
             <!-- /Sidebar Left-->
 
-            <!-- Chat & Contacts -->
+            <!-- Chat contacts -->
             <div class="col app-chat-contacts app-sidebar flex-grow-0 overflow-hidden border-end" id="app-chat-contacts">
                 <div class="sidebar-header">
                     <div class="d-flex align-items-center me-3 me-lg-0">
                         <div class="flex-shrink-0 avatar avatar-online me-3" data-bs-toggle="sidebar"
                             data-overlay="app-overlay-ex" data-target="#app-chat-sidebar-left">
                             <img class="user-avatar rounded-circle cursor-pointer"
-                                src="{{ asset('assets/img/avatars/1.png') }}" alt="Avatar">
+                                src="https://ui-avatars.com/api/?background=ECF5FF&color=4F8CEE&name={{ auth()->user()->name }}"
+                                alt="Avatar">
                         </div>
                         <div class="flex-grow-1 input-group input-group-merge rounded-pill">
                             <span class="input-group-text" id="basic-addon-search31"><i class="ti ti-search"></i></span>
@@ -140,47 +139,25 @@
                         <li class="chat-contact-list-item chat-list-item-0 d-none">
                             <h6 class="text-muted mb-0">No Chats Found</h6>
                         </li>
-                        <li class="chat-contact-list-item">
-                            <a class="d-flex align-items-center">
-                                <div class="flex-shrink-0 avatar avatar-online">
-                                    <img src="{{ asset('assets/img/avatars/13.png') }}" alt="Avatar"
-                                        class="rounded-circle">
-                                </div>
-                                <div class="chat-contact-info flex-grow-1 ms-2">
-                                    <h6 class="chat-contact-name text-truncate m-0">Waldemar Mannering</h6>
-                                    <p class="chat-contact-status text-muted text-truncate mb-0">Refer friends. Get
-                                        rewards.</p>
-                                </div>
-                                <small class="text-muted mb-auto">5 Minutes</small>
-                            </a>
-                        </li>
-                        <li class="chat-contact-list-item active">
-                            <a class="d-flex align-items-center">
-                                <div class="flex-shrink-0 avatar avatar-offline">
-                                    <img src="{{ asset('assets/img/avatars/2.png') }}" alt="Avatar"
-                                        class="rounded-circle">
-                                </div>
-                                <div class="chat-contact-info flex-grow-1 ms-2">
-                                    <h6 class="chat-contact-name text-truncate m-0">Felecia Rower</h6>
-                                    <p class="chat-contact-status text-muted text-truncate mb-0">I will purchase it for
-                                        sure. 👍</p>
-                                </div>
-                                <small class="text-muted mb-auto">30 Minutes</small>
-                            </a>
-                        </li>
-                        <li class="chat-contact-list-item">
-                            <a class="d-flex align-items-center">
-                                <div class="flex-shrink-0 avatar avatar-busy">
-                                    <span class="avatar-initial rounded-circle bg-label-success">CM</span>
-                                </div>
-                                <div class="chat-contact-info flex-grow-1 ms-2">
-                                    <h6 class="chat-contact-name text-truncate m-0">Calvin Moore</h6>
-                                    <p class="chat-contact-status text-muted text-truncate mb-0">If it takes long you can
-                                        mail inbox user</p>
-                                </div>
-                                <small class="text-muted mb-auto">1 Day</small>
-                            </a>
-                        </li>
+                        @foreach ($chats as $chat)
+                            @php
+                                $user = $chat->initiator_id == auth()->id() ? $chat->partner : $chat->initiator;
+                            @endphp
+                            <li class="chat-contact-list-item" onclick="loadChat({{ $chat->id }})">
+                                <a class="d-flex align-items-center">
+                                    <div class="flex-shrink-0 avatar">
+                                        <img src="https://ui-avatars.com/api/?background=ECF5FF&color=4F8CEE&name={{ $user->name }}"
+                                            alt="Avatar" class="rounded-circle chat_avatar">
+                                    </div>
+                                    <div class="chat-contact-info flex-grow-1 ms-2">
+                                        <h6 class="chat-contact-name text-truncate m-0">{{ $user->name }}</h6>
+                                        <p class="chat-contact-status text-muted text-truncate mb-0">{{ $user->email }}
+                                        </p>
+                                    </div>
+                                    {{-- <small class="text-muted mb-auto">5 Minutes</small> --}}
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
@@ -195,16 +172,16 @@
                                 <i class="ti ti-menu-2 ti-sm cursor-pointer d-lg-none d-block me-2"
                                     data-bs-toggle="sidebar" data-overlay data-target="#app-chat-contacts"></i>
                                 <div class="flex-shrink-0 avatar">
-                                    <img src="{{ asset('assets/img/avatars/2.png') }}" alt="Avatar"
-                                        class="rounded-circle" data-bs-toggle="sidebar" data-overlay
-                                        data-target="#app-chat-sidebar-right">
+                                    <img src="{{ asset('assets/blank.png') }}" alt="Avatar"
+                                        class="rounded-circle active_chat_avatar" data-bs-toggle="sidebar" data-overlay
+                                        data-target="#app-chat-sidebar-right ">
                                 </div>
                                 <div class="chat-contact-info flex-grow-1 ms-2">
-                                    <h6 class="m-0">Felecia Rower</h6>
-                                    <small class="user-status text-muted">NextJS developer</small>
+                                    <h6 class="m-0 chat_active_name"></h6>
+                                    <small class="user-status text-muted chat_active_sub_heading"></small>
                                 </div>
                             </div>
-                            <div class="d-flex align-items-center">
+                            {{-- <div class="d-flex align-items-center">
                                 <i class="ti ti-phone-call cursor-pointer d-sm-block d-none me-3"></i>
                                 <i class="ti ti-video cursor-pointer d-sm-block d-none me-3"></i>
                                 <i class="ti ti-search cursor-pointer d-sm-block d-none me-3"></i>
@@ -221,197 +198,11 @@
                                         <a class="dropdown-item" href="javascript:void(0);">Report</a>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                     <div class="chat-history-body bg-body">
-                        <ul class="list-unstyled chat-history">
-                            <li class="chat-message chat-message-right">
-                                <div class="d-flex overflow-hidden">
-                                    <div class="chat-message-wrapper flex-grow-1">
-                                        <div class="chat-message-text">
-                                            <p class="mb-0">How can we help? We're here for you! 😄</p>
-                                        </div>
-                                        <div class="text-end text-muted mt-1">
-                                            <i class='ti ti-checks ti-xs me-1 text-success'></i>
-                                            <small>10:00 AM</small>
-                                        </div>
-                                    </div>
-                                    <div class="user-avatar flex-shrink-0 ms-3">
-                                        <div class="avatar avatar-sm">
-                                            <img src="{{ asset('assets/img/avatars/1.png') }}" alt="Avatar"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="chat-message">
-                                <div class="d-flex overflow-hidden">
-                                    <div class="user-avatar flex-shrink-0 me-3">
-                                        <div class="avatar avatar-sm">
-                                            <img src="{{ asset('assets/img/avatars/2.png') }}" alt="Avatar"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="chat-message-wrapper flex-grow-1">
-                                        <div class="chat-message-text">
-                                            <p class="mb-0">Hey John, I am looking for the best admin template.</p>
-                                            <p class="mb-0">Could you please help me to find it out? 🤔</p>
-                                        </div>
-                                        <div class="chat-message-text mt-2">
-                                            <p class="mb-0">It should be Bootstrap 5 compatible.</p>
-                                        </div>
-                                        <div class="text-muted mt-1">
-                                            <small>10:02 AM</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="chat-message chat-message-right">
-                                <div class="d-flex overflow-hidden">
-                                    <div class="chat-message-wrapper flex-grow-1">
-                                        <div class="chat-message-text">
-                                            <p class="mb-0">
-                                                {{ config('variables.templateName') ? config('variables.templateName') : 'TemplateName' }}
-                                                has all the components you'll ever need in a app.</p>
-                                        </div>
-                                        <div class="text-end text-muted mt-1">
-                                            <i class='ti ti-checks ti-xs me-1 text-success'></i>
-                                            <small>10:03 AM</small>
-                                        </div>
-                                    </div>
-                                    <div class="user-avatar flex-shrink-0 ms-3">
-                                        <div class="avatar avatar-sm">
-                                            <img src="{{ asset('assets/img/avatars/1.png') }}" alt="Avatar"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="chat-message">
-                                <div class="d-flex overflow-hidden">
-                                    <div class="user-avatar flex-shrink-0 me-3">
-                                        <div class="avatar avatar-sm">
-                                            <img src="{{ asset('assets/img/avatars/2.png') }}" alt="Avatar"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="chat-message-wrapper flex-grow-1">
-                                        <div class="chat-message-text">
-                                            <p class="mb-0">Looks clean and fresh UI. 😃</p>
-                                        </div>
-                                        <div class="chat-message-text mt-2">
-                                            <p class="mb-0">It's perfect for my next project.</p>
-                                        </div>
-                                        <div class="chat-message-text mt-2">
-                                            <p class="mb-0">How can I purchase it?</p>
-                                        </div>
-                                        <div class="text-muted mt-1">
-                                            <small>10:05 AM</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="chat-message chat-message-right">
-                                <div class="d-flex overflow-hidden">
-                                    <div class="chat-message-wrapper flex-grow-1">
-                                        <div class="chat-message-text">
-                                            <p class="mb-0">Thanks, you can purchase it.</p>
-                                        </div>
-                                        <div class="text-end text-muted mt-1">
-                                            <i class='ti ti-checks ti-xs me-1 text-success'></i>
-                                            <small>10:06 AM</small>
-                                        </div>
-                                    </div>
-                                    <div class="user-avatar flex-shrink-0 ms-3">
-                                        <div class="avatar avatar-sm">
-                                            <img src="{{ asset('assets/img/avatars/1.png') }}" alt="Avatar"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="chat-message">
-                                <div class="d-flex overflow-hidden">
-                                    <div class="user-avatar flex-shrink-0 me-3">
-                                        <div class="avatar avatar-sm">
-                                            <img src="{{ asset('assets/img/avatars/2.png') }}" alt="Avatar"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="chat-message-wrapper flex-grow-1">
-                                        <div class="chat-message-text">
-                                            <p class="mb-0">I will purchase it for sure. 👍</p>
-                                        </div>
-                                        <div class="chat-message-text mt-2">
-                                            <p class="mb-0">Thanks.</p>
-                                        </div>
-                                        <div class="text-muted mt-1">
-                                            <small>10:08 AM</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="chat-message chat-message-right">
-                                <div class="d-flex overflow-hidden">
-                                    <div class="chat-message-wrapper flex-grow-1">
-                                        <div class="chat-message-text">
-                                            <p class="mb-0">Great, Feel free to get in touch.</p>
-                                        </div>
-                                        <div class="text-end text-muted mt-1">
-                                            <i class='ti ti-checks ti-xs me-1 text-success'></i>
-                                            <small>10:10 AM</small>
-                                        </div>
-                                    </div>
-                                    <div class="user-avatar flex-shrink-0 ms-3">
-                                        <div class="avatar avatar-sm">
-                                            <img src="{{ asset('assets/img/avatars/1.png') }}" alt="Avatar"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="chat-message">
-                                <div class="d-flex overflow-hidden">
-                                    <div class="user-avatar flex-shrink-0 me-3">
-                                        <div class="avatar avatar-sm">
-                                            <img src="{{ asset('assets/img/avatars/2.png') }}" alt="Avatar"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                    <div class="chat-message-wrapper flex-grow-1">
-                                        <div class="chat-message-text">
-                                            <p class="mb-0">Do you have design files for
-                                                {{ config('variables.templateName') ? config('variables.templateName') : 'TemplateName' }}?
-                                            </p>
-                                        </div>
-                                        <div class="text-muted mt-1">
-                                            <small>10:15 AM</small>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="chat-message chat-message-right">
-                                <div class="d-flex overflow-hidden">
-                                    <div class="chat-message-wrapper flex-grow-1 w-50">
-                                        <div class="chat-message-text">
-                                            <p class="mb-0">Yes that's correct documentation file, Design files are
-                                                included with the template.</p>
-                                        </div>
-                                        <div class="text-end text-muted mt-1">
-                                            <i class='ti ti-checks ti-xs me-1'></i>
-                                            <small>10:15 AM</small>
-                                        </div>
-                                    </div>
-                                    <div class="user-avatar flex-shrink-0 ms-3">
-                                        <div class="avatar avatar-sm">
-                                            <img src="{{ asset('assets/img/avatars/1.png') }}" alt="Avatar"
-                                                class="rounded-circle">
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
+
                     </div>
                     <!-- Chat message form -->
                     <div class="chat-history-footer shadow-sm">
@@ -419,11 +210,11 @@
                             <input class="form-control message-input border-0 me-3 shadow-none"
                                 placeholder="Type your message here">
                             <div class="message-actions d-flex align-items-center">
-                                <i class="speech-to-text ti ti-microphone ti-sm cursor-pointer"></i>
+                                {{-- <i class="speech-to-text ti ti-microphone ti-sm cursor-pointer"></i>
                                 <label for="attach-doc" class="form-label mb-0">
                                     <i class="ti ti-photo ti-sm cursor-pointer mx-3"></i>
                                     <input type="file" id="attach-doc" hidden>
-                                </label>
+                                </label> --}}
                                 <button class="btn btn-primary d-flex send-msg-btn">
                                     <i class="ti ti-send me-md-1 me-0"></i>
                                     <span class="align-middle d-md-inline-block d-none">Send</span>
@@ -502,4 +293,29 @@
             <div class="app-overlay"></div>
         </div>
     </div>
+@endsection
+
+@section('page-script')
+    <script src="{{ asset('assets/js/app-chat.js') }}"></script>
+    <script>
+        function loadChat(chat_id) {
+
+            // assign active
+            var chatContactName = $(event.target).closest('.chat-contact-list-item').find('.chat-contact-name').text();
+            var chatContactSubHeading = $(event.target).closest('.chat-contact-list-item').find('.chat-contact-status')
+                .text();
+            var imgSrc = $(event.target).closest('.chat-contact-list-item').find('img.chat_avatar').attr('src');
+            $('.active_chat_avatar').attr('src', imgSrc)
+            $('.chat_active_name').text(chatContactName)
+            $('.chat_active_sub_heading').text(chatContactSubHeading)
+
+            $.ajax({
+                url: "{{ route('client.chat.loadChatPage') }}",
+                type: 'GET',
+                success: function(response) {
+                    $('.chat-history-body').html(response)
+                }
+            });
+        }
+    </script>
 @endsection
