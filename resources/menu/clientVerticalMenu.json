@@ -1,0 +1,66 @@
+{
+  "menu": [
+    {
+      "menuHeader": "Espace Client"
+    },
+    {
+      "url": "client/dashboard",
+      "name": "Vue d'ensemble",
+      "icon": "menu-icon tf-icons ti ti-smart-home",
+      "slug": "app-chat"
+    },
+    {
+      "url": "client/contrat",
+      "name": "Votre contrat de chasse",
+      "icon": "menu-icon tf-icons ti ti-mail",
+      "slug": "app-email"
+    },
+    {
+      "url": "client/cahier-des-charges",
+      "name": "Votre cahier des charges",
+      "icon": "menu-icon tf-icons ti ti-messages",
+      "slug": "app-chat"
+    },
+    {
+      "url": "client/depot-dossier",
+      "name": "Dépôt de dossier",
+      "icon": "menu-icon tf-icons ti ti-messages",
+      "slug": "app-chat"
+    },
+    {
+      "url": "client/visites",
+      "name": "Mes Visites",
+      "icon": "menu-icon tf-icons ti ti-calendar",
+      "slug": "app-calendar"
+    },
+    {
+      "url": "client/propositions-logement",
+      "name": "Propositions de logements",
+      "icon": "menu-icon tf-icons ti ti-layout-kanban",
+      "slug": "app-kanban"
+    },
+    {
+      "url": "client/chat",
+      "name": "Chat",
+      "icon": "menu-icon tf-icons ti ti-messages",
+      "slug": "app-chat"
+    },
+    {
+      "menuHeader": "Leaze vous accompagne"
+    },
+    {
+      "url": "https://leaze.fr/cgu",
+      "icon": "menu-icon tf-icons ti ti-lifebuoy",
+      "name": "Besoin d'aide ?",
+      "slug": "support",
+      "target": "_blank"
+    },
+    {
+      "url": "https://leaze.fr/cgu",
+      "icon": "menu-icon tf-icons ti ti-file-description",
+      "name": "Conditions générales",
+      "slug": "documentation",
+      "target": "_blank"
+    }
+  ]
+}
