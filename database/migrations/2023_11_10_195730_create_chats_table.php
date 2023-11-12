@@ -13,8 +13,8 @@ return new class extends Migration
   {
     Schema::create('chats', function (Blueprint $table) {
       $table->id();
-      $table->integer('initiator_id');
-      $table->integer('partner_id');
+      $table->tinyInteger('initiator_id');
+      $table->tinyInteger('partner_id');
       $table->timestamps();
     });
   }

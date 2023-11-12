@@ -10,5 +10,6 @@ class ChatMessage extends Model
   use HasFactory;
   protected $casts = [
     'sender_id' => 'integer',
+    'chat_id' => 'integer',
   ];
 }

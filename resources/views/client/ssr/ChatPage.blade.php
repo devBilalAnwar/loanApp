@@ -1,143 +1,28 @@
 <ul class="list-unstyled chat-history">
-    <li class="chat-message chat-message-right">
-        <div class="d-flex overflow-hidden">
-            <div class="chat-message-wrapper flex-grow-1">
-                <div class="chat-message-text">
-                    <p class="mb-0">How can we help? We're here for you! 😄</p>
+    @foreach ($messages as $message)
+        @php
+            $user = $message->sender_id == $partner->id ? $partner : $initiator;
+        @endphp
+        <li class="chat-message @if ($message->sender_id == auth()->id()) chat-message-right @endif">
+            <div class="d-flex overflow-hidden">
+                <div class="user-avatar flex-shrink-0 me-3" @if ($message->sender_id == auth()->id()) style="order: 1" @endif>
+                    <div class="avatar avatar-sm">
+                        <img src="https://ui-avatars.com/api/?background=ECF5FF&color=4F8CEE&name={{ $user->name }}"
+                            alt="Avatar" class="rounded-circle">
+                    </div>
                 </div>
-                <div class="text-end text-muted mt-1">
-                    <i class='ti ti-checks ti-xs me-1 text-success'></i>
-                    <small>10:00 AM</small>
-                </div>
-            </div>
-            <div class="user-avatar flex-shrink-0 ms-3">
-                <div class="avatar avatar-sm">
-                    <img src="{{ asset('assets/img/avatars/1.png') }}" alt="Avatar" class="rounded-circle">
-                </div>
-            </div>
-        </div>
-    </li>
-    <li class="chat-message">
-        <div class="d-flex overflow-hidden">
-            <div class="user-avatar flex-shrink-0 me-3">
-                <div class="avatar avatar-sm">
-                    <img src="{{ asset('assets/img/avatars/2.png') }}" alt="Avatar" class="rounded-circle">
+                <div class="chat-message-wrapper flex-grow-1">
+                    <div class="chat-message-text">
+                        <p class="mb-0">{{ $message->message }}</p>
+                    </div>
+                    <div class="text-muted mt-1">
+                        <small>{{ $message->created_at->diffForHumans() }}</small>
+                    </div>
                 </div>
             </div>
-            <div class="chat-message-wrapper flex-grow-1">
-                <div class="chat-message-text">
-                    <p class="mb-0">Hey John, I am looking for the best admin template.</p>
-                    <p class="mb-0">Could you please help me to find it out? 🤔</p>
-                </div>
-                <div class="chat-message-text mt-2">
-                    <p class="mb-0">It should be Bootstrap 5 compatible.</p>
-                </div>
-                <div class="text-muted mt-1">
-                    <small>10:02 AM</small>
-                </div>
-            </div>
-        </div>
-    </li>
-    <li class="chat-message chat-message-right">
-        <div class="d-flex overflow-hidden">
-            <div class="chat-message-wrapper flex-grow-1">
-                <div class="chat-message-text">
-                    <p class="mb-0">
-                        {{ config('variables.templateName') ? config('variables.templateName') : 'TemplateName' }}
-                        has all the components you'll ever need in a app.</p>
-                </div>
-                <div class="text-end text-muted mt-1">
-                    <i class='ti ti-checks ti-xs me-1 text-success'></i>
-                    <small>10:03 AM</small>
-                </div>
-            </div>
-            <div class="user-avatar flex-shrink-0 ms-3">
-                <div class="avatar avatar-sm">
-                    <img src="{{ asset('assets/img/avatars/1.png') }}" alt="Avatar" class="rounded-circle">
-                </div>
-            </div>
-        </div>
-    </li>
-    <li class="chat-message">
-        <div class="d-flex overflow-hidden">
-            <div class="user-avatar flex-shrink-0 me-3">
-                <div class="avatar avatar-sm">
-                    <img src="{{ asset('assets/img/avatars/2.png') }}" alt="Avatar" class="rounded-circle">
-                </div>
-            </div>
-            <div class="chat-message-wrapper flex-grow-1">
-                <div class="chat-message-text">
-                    <p class="mb-0">Looks clean and fresh UI. 😃</p>
-                </div>
-                <div class="chat-message-text mt-2">
-                    <p class="mb-0">It's perfect for my next project.</p>
-                </div>
-                <div class="chat-message-text mt-2">
-                    <p class="mb-0">How can I purchase it?</p>
-                </div>
-                <div class="text-muted mt-1">
-                    <small>10:05 AM</small>
-                </div>
-            </div>
-        </div>
-    </li>
-    <li class="chat-message chat-message-right">
-        <div class="d-flex overflow-hidden">
-            <div class="chat-message-wrapper flex-grow-1">
-                <div class="chat-message-text">
-                    <p class="mb-0">Thanks, you can purchase it.</p>
-                </div>
-                <div class="text-end text-muted mt-1">
-                    <i class='ti ti-checks ti-xs me-1 text-success'></i>
-                    <small>10:06 AM</small>
-                </div>
-            </div>
-            <div class="user-avatar flex-shrink-0 ms-3">
-                <div class="avatar avatar-sm">
-                    <img src="{{ asset('assets/img/avatars/1.png') }}" alt="Avatar" class="rounded-circle">
-                </div>
-            </div>
-        </div>
-    </li>
-    <li class="chat-message">
-        <div class="d-flex overflow-hidden">
-            <div class="user-avatar flex-shrink-0 me-3">
-                <div class="avatar avatar-sm">
-                    <img src="{{ asset('assets/img/avatars/2.png') }}" alt="Avatar" class="rounded-circle">
-                </div>
-            </div>
-            <div class="chat-message-wrapper flex-grow-1">
-                <div class="chat-message-text">
-                    <p class="mb-0">I will purchase it for sure. 👍</p>
-                </div>
-                <div class="chat-message-text mt-2">
-                    <p class="mb-0">Thanks.</p>
-                </div>
-                <div class="text-muted mt-1">
-                    <small>10:08 AM</small>
-                </div>
-            </div>
-        </div>
-    </li>
-    <li class="chat-message chat-message-right">
-        <div class="d-flex overflow-hidden">
-            <div class="chat-message-wrapper flex-grow-1">
-                <div class="chat-message-text">
-                    <p class="mb-0">Great, Feel free to get in touch.</p>
-                </div>
-                <div class="text-end text-muted mt-1">
-                    <i class='ti ti-checks ti-xs me-1 text-success'></i>
-                    <small>10:10 AM</small>
-                </div>
-            </div>
-            <div class="user-avatar flex-shrink-0 ms-3">
-                <div class="avatar avatar-sm">
-                    <img src="{{ asset('assets/img/avatars/1.png') }}" alt="Avatar" class="rounded-circle">
-                </div>
-            </div>
-        </div>
-    </li>
-    <li class="chat-message">
+        </li>
+    @endforeach
+    {{-- <li class="chat-message">
         <div class="d-flex overflow-hidden">
             <div class="user-avatar flex-shrink-0 me-3">
                 <div class="avatar avatar-sm">
@@ -174,5 +59,5 @@
                 </div>
             </div>
         </div>
-    </li>
+    </li> --}}
 </ul>

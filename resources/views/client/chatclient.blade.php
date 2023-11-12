@@ -136,10 +136,8 @@
                     </div>
                     <!-- Chats -->
                     <ul class="list-unstyled chat-contact-list" id="chat-list">
-                        <li class="chat-contact-list-item chat-list-item-0 d-none">
-                            <h6 class="text-muted mb-0">No Chats Found</h6>
-                        </li>
-                        @foreach ($chats as $chat)
+
+                        @forelse ($chats as $chat)
                             @php
                                 $user = $chat->initiator_id == auth()->id() ? $chat->partner : $chat->initiator;
                             @endphp
@@ -157,7 +155,11 @@
                                     {{-- <small class="text-muted mb-auto">5 Minutes</small> --}}
                                 </a>
                             </li>
-                        @endforeach
+                        @empty
+                            <li class="chat-contact-list-item chat-list-item-0">
+                                <h6 class="text-muted mb-0">No Chats Found</h6>
+                            </li>
+                        @endforelse
                     </ul>
                 </div>
             </div>
@@ -205,19 +207,20 @@
 
                     </div>
                     <!-- Chat message form -->
-                    <div class="chat-history-footer shadow-sm">
+                    <div class="chat-history-footer shadow-sm" style="display: none">
                         <form class="form-send-message d-flex justify-content-between align-items-center ">
                             <input class="form-control message-input border-0 me-3 shadow-none"
                                 placeholder="Type your message here">
+                            <input type="hidden" id="new_id" value="">
                             <div class="message-actions d-flex align-items-center">
                                 {{-- <i class="speech-to-text ti ti-microphone ti-sm cursor-pointer"></i>
                                 <label for="attach-doc" class="form-label mb-0">
                                     <i class="ti ti-photo ti-sm cursor-pointer mx-3"></i>
                                     <input type="file" id="attach-doc" hidden>
                                 </label> --}}
-                                <button class="btn btn-primary d-flex send-msg-btn">
+                                <button class="btn btn-primary d-flex send-msg-btn" onClick="sendMessage()">
                                     <i class="ti ti-send me-md-1 me-0"></i>
-                                    <span class="align-middle d-md-inline-block d-none">Send</span>
+                                    <span class="align-middle d-md-inline-block d-none ">Send</span>
                                 </button>
                             </div>
                         </form>
@@ -299,7 +302,6 @@
     <script src="{{ asset('assets/js/app-chat.js') }}"></script>
     <script>
         function loadChat(chat_id) {
-
             // assign active
             var chatContactName = $(event.target).closest('.chat-contact-list-item').find('.chat-contact-name').text();
             var chatContactSubHeading = $(event.target).closest('.chat-contact-list-item').find('.chat-contact-status')
@@ -308,14 +310,43 @@
             $('.active_chat_avatar').attr('src', imgSrc)
             $('.chat_active_name').text(chatContactName)
             $('.chat_active_sub_heading').text(chatContactSubHeading)
+            $('#new_id').val(chat_id)
+            $('.chat-history-footer').show()
 
             $.ajax({
-                url: "{{ route('client.chat.loadChatPage') }}",
+                url: "{{ route('client.chat.loadChatPage') }}?chat_id=" + chat_id,
                 type: 'GET',
                 success: function(response) {
                     $('.chat-history-body').html(response)
+                    scrollToBottom()
                 }
             });
+        }
+
+        function sendMessage() {
+            const chat_id = $('#new_id').val()
+            const message = $('.message-input').val()
+            var token = "{{ csrf_token() }}";
+            console.log('chat_id: ', chat_id);
+            $.ajax({
+                url: "{{ route('client.chat.send_message') }}",
+                type: 'POST',
+                data: {
+                    chat_id: chat_id,
+                    message: message,
+                },
+                headers: {
+                    'X-CSRF-TOKEN': token // Set the CSRF token in the request header
+                },
+                success: function(response) {
+                    console.log('response: ', response);
+                }
+            });
+        }
+
+        function scrollToBottom() {
+            var chatHistoryBody = document.querySelector('.chat-history-body')
+            chatHistoryBody.scrollTo(0, chatHistoryBody.scrollHeight);
         }
     </script>
 @endsection

@@ -404,6 +404,7 @@ Route::middleware([
     Route::get('/visites', [ClientController::class, 'visites'])->name('client.visites');
     Route::get('/chat', [ClientController::class, 'chatClient'])->name('client.chat');
     Route::get('/loadChatPage', [ClientController::class, 'loadChatPage'])->name('client.chat.loadChatPage');
+    Route::post('/send_message', [ClientController::class, 'send_message'])->name('client.chat.send_message');
     Route::get('/contrat', [ClientController::class, 'contratClient'])->name('client.contrat');
     Route::get('/depot-dossier', [ClientController::class, 'depotdossier'])->name('client.depot-dossier');
   });
