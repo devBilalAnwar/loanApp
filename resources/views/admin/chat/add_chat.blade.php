@@ -15,7 +15,7 @@
                         @csrf
                         <div class="mb-3">
                             <label for="exampleFormControlSelect1" class="form-label">User 1</label>
-                            <select class="form-select" id="exampleFormControlSelect1" name="initiator_id"
+                            <select class="form-select" id="exampleFormControlSelect1" name="initiator_id" required
                                 aria-label="Default select example">
                                 <option selected disabled value="">Select</option>
                                 @foreach ($users as $user)
@@ -25,7 +25,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="exampleFormControlSelect1" class="form-label">User 2</label>
-                            <select class="form-select" id="exampleFormControlSelect1" name="partner_id"
+                            <select class="form-select" id="exampleFormControlSelect1" name="partner_id" required
                                 aria-label="Default select example">
                                 <option selected disabled value="">Select</option>
                                 @foreach ($users as $user)
