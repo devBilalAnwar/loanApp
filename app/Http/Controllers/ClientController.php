@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Chat;
 use App\Models\ChatMessage;
 use App\Models\Message;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ClientController extends Controller
@@ -69,5 +70,33 @@ class ClientController extends Controller
   public function depotDossier()
   {
     return view('client.depotdossier');
+  }
+  public function assignChat()
+  {
+    $chats = Chat::get();
+    return view('admin.chat.assignChat', compact('chats'));
+  }
+  public function add_new_chat()
+  {
+    $users = User::get();
+    return view('admin.chat.add_chat', compact('users'));
+  }
+  public function save_chat(Request $request)
+  {
+    $initiator_id = $request->initiator_id;
+    $partner_id = $request->partner_id;
+    $chat = Chat::where('partner_id', $partner_id)->where('initiator_id', $initiator_id)->first();
+    if ($chat) {
+      return redirect()->route('assignChat');
+    }
+    $chat = Chat::where('partner_id', $initiator_id)->where('initiator_id', $partner_id)->first();
+    if ($chat) {
+      return redirect()->route('assignChat');
+    }
+    $chat = new Chat();
+    $chat->initiator_id = $initiator_id;
+    $chat->partner_id = $partner_id;
+    $chat->save();
+    return redirect()->route('assignChat');
   }
 }

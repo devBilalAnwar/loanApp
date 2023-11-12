@@ -405,6 +405,9 @@ Route::middleware([
     Route::get('/chat', [ClientController::class, 'chatClient'])->name('client.chat');
     Route::get('/loadChatPage', [ClientController::class, 'loadChatPage'])->name('client.chat.loadChatPage');
     Route::post('/send_message', [ClientController::class, 'send_message'])->name('client.chat.send_message');
+    Route::get('/add_new_chat', [ClientController::class, 'add_new_chat'])->name('add_new_chat');
+    Route::post('/save_chat', [ClientController::class, 'save_chat'])->name('save_chat');
+    Route::get('/assignChat', [ClientController::class, 'assignChat'])->name('assignChat');
     Route::get('/contrat', [ClientController::class, 'contratClient'])->name('client.contrat');
     Route::get('/depot-dossier', [ClientController::class, 'depotdossier'])->name('client.depot-dossier');
   });
